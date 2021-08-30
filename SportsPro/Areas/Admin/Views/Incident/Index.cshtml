@@ -1,0 +1,75 @@
+﻿@*directive to specify the model for this view is a collection of Incident objects
+    because of the Index action method of the Incident Controller.*@
+@model IncidentListViewModel
+@{
+    ViewBag.Title = "Incident Manager";
+}
+
+<h2>Incident List</h2>
+
+@*a link to request the Add() action method of the Incident Controller.
+    Allows user to add a new Incident.*@
+<a asp-controller="Incident" asp-action="Add" class="btn btn-primary">Add New Incident</a>
+@*<h3><a href="/Incident?filter=all">All Incidents</a></h3>
+<h3><a href="/Incident?filter=unassigned">Unassigned Incidents</a></h3>
+<h3><a href="/Incident?filter=open">Open Incidents</a></h3>*@
+
+@*added tabs to filter incident table using query string. Query parameter is read into a variable and passed through
+the TeamsListViewModel to the views page.*@
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link @(Model.MyFilter=="all"||Model.MyFilter==null?"active":"")"
+           asp-area="admin"
+           asp-controller="incident"
+           asp-action="index"
+           asp-route-filter="all">All Incidents</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.MyFilter=="unassigned"?"active":"")"
+           asp-area="admin"
+           asp-controller="incident"
+           asp-action="index"
+           asp-route-filter="unassigned">Unassigned Incidents</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.MyFilter=="open"?"active":"")"
+           asp-area="admin"
+           asp-controller="incident"
+           asp-action="index"
+           asp-route-filter="open">Open Incidents</a>
+    </li>
+</ul>
+@*<h1>@ViewBag.Filter</h1>*@
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Date Opened</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @*loops through the collection of Incident objects and displays each one in a row.*@
+        @foreach (var incident in Model.Incidents)
+        {
+            <tr>
+                <td>@incident.Title</td>
+                <td>@incident.Customer.FullName</td>
+                <td>@incident.Product.Name</td>
+                <td>@incident.DateOpened.ToShortDateString()</td>
+                <td>
+                    @*links that request the Edit() and Delete() action methods of the
+                        Incident Controller for that specifiec Incident*@
+                    <a asp-controller="Incident" asp-action="Edit"
+                       asp-route-id="@incident.IncidentID" class="btn btn-outline-secondary" style="margin-left: 5px; margin-right: 5px">Edit</a>
+                    @if (User.IsInRole("Admin"))
+                    { <a asp-controller="Incident" asp-action="Delete"
+                       asp-route-id="@incident.IncidentID" class="btn btn-outline-danger" style="margin-left: 5px; margin-right: 5px">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

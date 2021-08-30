@@ -1,0 +1,47 @@
+﻿@model Technician
+@{
+    string title = ViewBag.Action + " Technician";
+    ViewBag.Title = title;
+}
+
+@*Enable Validation Scripts via RenderSection() in the _Layout.cshtml*@
+@section validation {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@*uses the string variable above to change the title according to the action.*@
+<h2>@ViewBag.Title</h2>
+
+@*form that posts to the Edit() action. uses asp-action tag helper, but not
+    asp-controller.*@
+<form asp-action="Edit" method="post">
+
+    @*data validation*@
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    @*displays labels and text boxes*@
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Phone">Phone</label>
+        <input asp-for="Phone" class="form-control" />
+    </div>
+
+    @*uses hidden field to store the TechnicianID*@
+    <input type="hidden" asp-for="TechnicianID" />
+
+    @*button link formatted, submit posts form to Edit(), ViewBag.Action displays
+        Add or Edit depending on which action method served the view.*@
+    <button type="submit" class="btn btn-primary">@ViewBag.Action</button>
+    <a asp-controller="Technician" asp-action="Index"
+       class="btn btn-outline-secondary">Cancel</a>
+</form>

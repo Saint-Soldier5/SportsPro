@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Technicians";
+}
+
+<h1>SportsPro Technical Support</h1>
+<p>Sports management software for the sports enthusiast</p>
+
+<h1>Admin</h1>
+<div class="list-group">
+    <a asp-area="Admin" asp-controller="Product" asp-action="Index"
+       class="list-group-item">Manage Products</a>
+    <a asp-area="Admin" asp-controller="Technician" asp-action="Index"
+       class="list-group-item">Manage Technicians</a>
+    <a asp-area="Admin" asp-controller="Customer" asp-action="Index"
+       class="list-group-item">Manage Customers</a>
+    <a asp-area="Admin" asp-controller="Incident" asp-action="Index"
+       class="list-group-item">Manage Incidents</a>
+    <a asp-area="Admin" asp-controller="Registration" asp-action="Index"
+       class="list-group-item">Manage Registrations</a>
+    <a asp-area="Admin" asp-action="Index" asp-controller="User"
+       class="list-group-item"> Manage Users</a>
+</div>
+
+<h1>Technicians</h1>
+<div class="list-group">
+    <a asp-area="Technician" asp-controller="TechIncident" asp-action="Index"
+       class="list-group-item">Update Incident</a>
+</div>
+<div>
+    <markdown>
+        [Google](https://www.google.com/) This is a link to **Google**.
+    </markdown>
+</div>

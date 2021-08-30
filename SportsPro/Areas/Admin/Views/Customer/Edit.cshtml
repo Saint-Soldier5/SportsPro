@@ -1,0 +1,101 @@
+﻿@model Customer
+@{
+    string title = ViewBag.Action + " Customer";
+    ViewBag.Title = title;
+}
+
+@*Enable Validation Scripts via RenderSection() in the _Layout.cshtml*@
+@section validation {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@*uses the string variable above to change the title according to the action.*@
+<h2>@ViewBag.Title</h2>
+
+@*form that posts to the Edit() action. uses asp-action tag helper, but not
+    asp-controller.*@
+<form asp-action="Edit" method="post">
+
+    @*data validation*@
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    @*displays labels and text boxes*@
+<div class="form-group">
+    <label asp-for="FirstName">First Name</label>
+    <input asp-for="FirstName" class="form-control"  />
+    <span asp-validation-for="FirstName" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="LastName">Last Name</label>
+    <input asp-for="LastName" class="form-control" />
+    <span asp-validation-for="LastName" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Address">Address</label>
+    <input asp-for='Address' class="form-control" />
+    <span asp-validation-for="Address" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="City">City</label>
+    <input asp-for="City" class="form-control" />
+    <span asp-validation-for="City" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="State">State</label>
+    <input asp-for="State" class="form-control" />
+    <span asp-validation-for="State" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="PostalCode">Postal Code</label>
+    <input asp-for="PostalCode" class="form-control" />
+    <span asp-validation-for="PostalCode" class="text-danger"></span>
+</div>
+
+@*<div class="form-group">
+    <label asp-for="CountryID" class="control-label">Country</label>
+    <select asp-for="CountryID"
+            asp-items="@(new SelectList(ViewBag.Countries,
+    "CountryID", "Name", Model.CountryID?.ToString()))"
+            class="form-control">
+        <option value="">Please Select a Country</option>
+    </select>
+    <span asp-validation-for="CountryID" class="text-danger"></span>
+</div>*@
+
+<div class="form-group">
+    <label asp-for="CountryID" class="control-label">Country</label>
+    <select asp-for="CountryID" class="form-control">
+        <vc:country-drop-down value="@Model.CountryID"
+                              default-value=""
+                              default-text="Please Select a Country..." />
+    </select>
+    <span asp-validation-for="CountryID" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Email">Email</label>
+    <input asp-for="Email" class="form-control" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Phone">Phone</label>
+    <input asp-for="Phone" class="form-control" />
+    <span asp-validation-for="Phone" class="text-danger"></span>
+</div>
+
+    @*uses hidden field to store the CustomerID*@
+    <input type="hidden" asp-for="CustomerID" />
+
+    @*button link formatted, submit posts form to Edit(), ViewBag.Action displays
+        Add or Edit depending on which action method served the view.*@
+    <button type="submit" class="btn btn-primary">@ViewBag.Action</button>
+    <a asp-controller="Customer" asp-action="Index"
+       class="btn btn-outline-secondary">Cancel</a>
+</form>

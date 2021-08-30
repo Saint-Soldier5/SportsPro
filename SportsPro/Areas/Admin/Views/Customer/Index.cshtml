@@ -1,0 +1,43 @@
+﻿@*directive to specify the model for this view is a collection of Customer objects
+    because of the Index action method of the Customer Controller.*@
+@model List<Customer>
+@{
+    ViewBag.Title = "Customer Manager";
+}
+
+<h2>Customer List</h2>
+
+@*a link to request the Add() action method of the Customer Controller.
+    Allows user to add a new Customer.*@
+<a asp-controller="Customer" asp-action="Add" class="btn btn-primary">Add New Customer</a>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>City</th>
+            <th>Country</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @*loops through the collection of Customer objects and displays each one in a row.*@
+        @foreach (var cust in Model)
+        {
+            <tr>
+                <td>@cust.FullName</td>
+                <td>@cust.Email</td>
+                <td>@cust.City</td>
+                <td>@cust.Country.Name</td>
+                <td>
+                    @*links that request the Edit() and Delete() action methods of the
+                        Customer Controller for that specifiec Customer*@
+                    <a asp-controller="Customer" asp-action="Edit"
+                       asp-route-id="@cust.CustomerID" class="btn btn-outline-secondary" style="margin-left: 5px; margin-right: 5px">Edit</a>
+                    <a asp-controller="Customer" asp-action="Delete"
+                       asp-route-id="@cust.CustomerID" class="btn btn-outline-danger" style="margin-left: 5px; margin-right: 5px">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

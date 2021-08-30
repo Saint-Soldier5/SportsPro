@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "_Layout";
+
+    var current = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+@RenderSection("validation", false)
+
+<ul class="nav nav-tabs mt-2 mb-3">
+    <li class="nav-item">
+        
+    </li>
+</ul>
+
+@RenderBody()
+

@@ -1,0 +1,19 @@
+﻿@model DropDownViewModel
+
+@if (Model.HasDefault)
+{
+<option value="@Model.DefaultValue">@Model.DefaultText</option>}
+
+
+
+@foreach (var item in Model.Items)
+{
+    if (Model.SelectedValue == item.Key)
+    {
+<option value="@item.Key" selected>@item.Value</option> 
+    }
+    else
+    {
+<option value="@item.Key">@item.Value</option>
+    }
+ }

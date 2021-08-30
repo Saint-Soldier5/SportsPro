@@ -1,0 +1,119 @@
+﻿@model UserViewModel
+@{
+    ViewData["Title"] = " | Manage Users";
+}
+
+<h1 class="mb-2">Manage Users</h1>
+
+<a class="btn btn-primary" asp-action="Add">Add a User</a>
+
+<table class="table table-bordered table-striped table-sm" style="border:1px solid RebeccaPurple;">
+    
+    <thead>
+        <tr><th>Username</th><th>Roles</th><th></th><th></th><th></th></tr>
+    </thead>
+    <tbody style="        border: 1px solid RebeccaPurple ">
+        @if (Model.Users.Count() == 0)
+        {
+            <tr style="border:1px solid RebeccaPurple "><td colspan="5" style="border:1px solid RebeccaPurple">There are no user accounts.</td></tr>
+        }
+        else
+        {
+            @foreach (User user in Model.Users)
+            {
+                <tr style="border:1px solid RebeccaPurple ">
+                    <td>@user.UserName</td>
+                    <td>
+                        @foreach (string roleName in user.RoleNames)
+                        {
+                            <div>@roleName</div>
+                        }
+                    </td>
+                    <td>
+                        <form method="post" asp-action="Delete"
+                              asp-route-id="@user.Id">
+                            <button type="submit" class="btn btn-primary">
+                                Delete User
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" asp-action="AddToAdmin"
+                              asp-route-id="@user.Id">
+                            <button type="submit" class="btn btn-primary">
+                                Add To Admin
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" asp-action="RemoveFromAdmin"
+                              asp-route-id="@user.Id">
+                            <button type="submit" class="btn btn-primary">
+                                Remove From Admin
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" asp-action="AddToTechnician"
+                              asp-route-id="@user.Id">
+                            <button type="submit" class="btn btn-primary">
+                                Add To Technician
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" asp-action="RemoveFromTechnician"
+                              asp-route-id="@user.Id">
+                            <button type="submit" class="btn btn-primary">
+                                Remove From Technician
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h1 class="mb-2">Manage Roles</h1>
+
+@if (Model.Roles.Count() == 0)
+{
+    <form method="post" asp-action="CreateAdminRole">
+        <button type="submit" class="btn btn-primary">
+            Create Admin Role
+        </button>
+    </form>
+}
+else
+{
+    <table class="table table-bordered table-striped table-sm">
+        <thead style="border:1px solid RebeccaPurple">
+            <tr><th>Role</th><th></th></tr>
+        </thead>
+        <tbody style="border:1px solid RebeccaPurple">
+            @foreach (var role in Model.Roles)
+            {
+                <tr>
+                    <td>@role.Name</td>
+                    <td>
+                        <form method="post" asp-action="DeleteRole"
+                              asp-route-id="@role.Id">
+                            <button type="submit" class="btn btn-primary">
+                                Delete Role
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+   
+
+    <form method="post" asp-action="CreateTechnicianRole">
+        <button type="submit" class="btn btn-primary">
+            Create Technician Role
+        </button>
+    </form>
+}

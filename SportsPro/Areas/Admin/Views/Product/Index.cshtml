@@ -1,0 +1,45 @@
+﻿@*directive to specify the model for this view is a collection of Product objects
+    because of the Index action method of the Product Controller.*@
+@model List<Product>
+@{
+    ViewBag.Title = "Product Manager";
+}
+
+<h2>Product List</h2>
+
+@*a link to request the Add() action method of the Product Controller.
+    Allows user to add a new Product.*@
+<a asp-controller="Product" asp-action="Add" class="btn btn-primary">Add New Product</a>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Product Code</th>
+            <th>Name</th>
+            <th>Yearly Price</th>
+            <th>Release Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @*loops through the collection of Product objects and displays each one in a row.*@
+        @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductCode</td>
+                    <td>@item.Name</td>
+                    <td>@item.YearlyPrice.ToString("C2")</td>
+                    <td>@item.ReleaseDate.ToShortDateString()</td>
+                    <td>
+                        @*links that request the Edit() and Delete() action methods of the
+                            Product Controller for that specifiec product*@
+                        <a asp-controller="Product" asp-action="Edit"
+                           asp-route-id="@item.ProductID"
+                           class="btn btn-outline-secondary" style="margin-left: 5px; margin-right: 5px">Edit</a>
+                        <a asp-controller="Product" asp-action="Delete"
+                           asp-route-id="@item.ProductID"
+                           class="btn btn-outline-danger" style="margin-left: 5px; margin-right: 5px">Delete</a>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>

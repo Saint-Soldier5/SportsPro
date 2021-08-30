@@ -1,0 +1,19 @@
+﻿@model Product
+@{
+    ViewBag.Title = "Delete Product";
+}
+
+<h2>Confirm Deletion</h2>
+<h3>@Model.Name</h3>
+
+<form asp-action="Delete" method="post">
+
+    @*binding the ProductID to a hidden field. form posts primary key of the
+        product to be deleted to the Delete() action.*@
+    <input type="hidden" asp-for="ProductID" />
+    <input type="hidden" asp-for="Name" />
+
+    <button type="submit" class="btn btn-outline-danger">Delete</button>
+    <a asp-controller="Registration" asp-action="RegProduct"
+       class="btn btn-outline-primary">Cancel</a>
+</form>

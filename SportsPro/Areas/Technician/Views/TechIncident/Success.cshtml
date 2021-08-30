@@ -1,0 +1,51 @@
+﻿@model IncidentListViewModel
+@{
+   ViewBag.Title = "Success";
+}
+
+@*Enable Validation Scripts via RenderSection() in the _Layout.cshtml*@
+@section validation {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@*uses the string variable above to change the title according to the action.*@
+<h2>Success</h2>
+@{ 
+    var session = new MySession(Context.Session);
+    var tech = session.GetTechnician();
+}
+
+<h2>@tech.Name</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Date Opened</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @*loops through the collection of Incident objects and displays each one in a row.*@
+        @foreach (var incident in Model.Incidents)
+        {
+            <tr>
+                <td>@incident.Title</td>
+                <td>@incident.Customer.FullName</td>
+                <td>@incident.Product.Name</td>
+                <td>@incident.DateOpened.ToShortDateString()</td>
+                <td>
+                    @*links that request the Edit() and Delete() action methods of the
+                        Incident Controller for that specifiec Incident*@
+                    <a asp-controller="TechIncident" asp-action="Edit"
+                       asp-route-id="@incident.IncidentID" class="btn btn-outline-secondary">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-controller="TechIncident" asp-action="Index" class="btn btn-primary">Switch Technician</a>
+
+

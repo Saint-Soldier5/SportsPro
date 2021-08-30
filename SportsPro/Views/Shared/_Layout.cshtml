@@ -1,0 +1,140 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> signInManager
+@{
+    var current = ViewContext.RouteData.Values["controller"]?.ToString() + "/" +
+        ViewContext.RouteData.Values["action"]?.ToString();
+}
+@RenderSection("validation", false)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SportsPro</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-vapor.min.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-vapor.css" />
+    @*themes are found here https://bootswatch.com/*@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-secondary p-3">
+        <a class="navbar-brand ml-3" href="/">SportsPro</a>
+        <button class="navbar-toggler" type="button"
+                data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <nav class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav mr-auto">
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="nav-item nav-link
+                       @Nav.Active("Home/Index", current)" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="nav-item nav-link
+                       @Nav.Active("Product/Index", current)" asp-area="Admin" asp-controller="Product" asp-action="Index">Products</a>
+                    <a class="nav-item nav-link
+                           @Nav.Active("Technician/Index", current)" asp-area="Admin" asp-controller="Technician" asp-action="Index">Technicians</a>
+                    <a class="nav-item nav-link
+                           @Nav.Active("Customer/Index", current)" asp-area="Admin" asp-controller="Customer" asp-action="Index">Customers</a>
+                    <a class="nav-item nav-link
+                           @Nav.Active("Incident/Index", current)" asp-area="Admin" asp-controller="Incident" asp-action="Index">Incidents</a>
+                    <a class="nav-item nav-link
+                           @Nav.Active("Registration/Index", current)" asp-area="Admin" asp-controller="Registration" asp-action="Index">Registrations</a>
+                    <a asp-area="Admin" asp-action="Index" asp-controller="User"
+                       class="nav-link @Nav.Active("User", current)">
+                        Manage Users
+                    </a>
+                }
+                else if (User.IsInRole("Technician"))
+                {
+                    <a class="nav-item nav-link
+                       @Nav.Active("Home/Index", current)" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="nav-item nav-link
+                       @Nav.Active("Incident/Index", current)" asp-area="Admin" asp-controller="Incident" asp-action="Index">Incidents</a>
+                }
+                else
+                {
+                    <a class="nav-item nav-link
+                       @Nav.Active("Home/Index", current)" asp-controller="Home" asp-action="Index">Home</a>
+                }
+
+
+            </div>
+            <div class="navbar-nav ml-auto" >
+                @if (signInManager.IsSignedIn(User))
+                {
+                    // signed-in user - Log Out button and username
+                    <li class="nav-item">
+                        <form method="post" asp-action="Logout" asp-controller="Account"
+                              asp-area="">
+                            <input type="submit" value="Log Out"
+                                   class="btn btn-outline-light  pull-right" />
+                            <span class="text-light ">@User.Identity.Name</span>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    //get current action
+                    var action = ViewContext.RouteData.Values["action"]?.ToString();
+
+                    // anonymous user - Register link and Log In button
+                    <li class="nav-item @Nav.Active("Account/Register", current)">
+                        <a asp-action="Register" asp-controller="Account"
+                           asp-area="" class="nav-link">Register</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a asp-action="Login" asp-controller="Account"
+                           asp-area="" class="btn btn-outline-light">Log In</a>
+                    </li>
+                }
+                <a class="nav-item nav-link 
+                       @Nav.Active("Home/About", current)" asp-controller="Home" asp-action="About">About</a>
+            </div>
+        </nav>
+    </nav>
+</header>
+
+<div class="container">
+    <main role="main" class="pb-5">
+        @if (TempData.Keys.Contains("msgAdd"))
+        {
+            <h4 class="alert alert-success text-center">
+                @TempData["msgAdd"]
+            </h4>
+        }
+        else if (TempData.Keys.Contains("msgDelete"))
+        {
+            <h4 class="alert alert-danger text-center">
+                @TempData["msgDelete"]
+            </h4>
+        }
+        else if (TempData.Keys.Contains("msgEdit"))
+        {
+            <h4 class="alert alert-info text-center">
+                @TempData["msgEdit"]
+            </h4>
+        }
+        else if (TempData.Keys.Contains("message"))
+        {
+            <h4 class="alert alert-info text-center">
+                @TempData["message"]
+            </h4>
+        }
+        else { }
+    </main>
+</div>
+<div class="container">
+    @RenderBody()
+</div>
+
+
+<footer class="border-top footer text-muted">
+    <div class="container">&copy; @DateTime.Now.Year - SportsPro</div>
+</footer>
+</html>

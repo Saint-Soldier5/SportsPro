@@ -1,0 +1,37 @@
+﻿@model RegistrationViewModel
+@{
+   ViewBag.Title = "Registration";
+}
+
+@*Enable Validation Scripts via RenderSection() in the _Layout.cshtml*@
+@section validation {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+@*uses the string variable above to change the title according to the action.*@
+<h2>Get Customer</h2>
+
+@*form that posts to the Edit() action. uses asp-action tag helper, but not
+    asp-controller.*@
+<form asp-action="Index" method="post">
+
+    @*data validation*@
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    @*displays labels and text boxes*@
+    <div class="form-group">
+        <label asp-for="@Model.Customer.CustomerID">Customer</label>
+        <select asp-for="@Model.Customer.CustomerID"
+                asp-items="@(new SelectList(Model.Customers, "CustomerID", "FullName", Model.Customer.CustomerID.ToString()))"
+                class="form-control">
+            <option>Please Select a Customer</option>
+        </select>
+    </div>
+
+    @*button link formatted, submit posts form to Edit(), ViewBag.Action displays
+        Add or Edit depending on which action method served the view.*@
+    <button type="submit" class="btn btn-primary" style="margin-left: 5px; margin-right: 5px">Select</button>
+    <a asp-controller="Registration" asp-action="Index"
+       class="btn btn-outline-secondary" style="margin-left: 5px; margin-right: 5px">Cancel</a>
+</form>

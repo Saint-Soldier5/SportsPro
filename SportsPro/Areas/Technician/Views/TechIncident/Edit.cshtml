@@ -1,0 +1,74 @@
+﻿@model IncidentViewModel
+@{
+    string title = Model.DesiredAction + " Incident";
+    ViewBag.Title = title;
+}
+
+@*Enable Validation Scripts via RenderSection() in the _Layout.cshtml*@
+@section validation {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+@{
+    var session = new MySession(Context.Session);
+    var tech = session.GetTechnician();
+}
+@*uses the string variable above to change the title according to the action.*@
+<h2>@ViewBag.Title</h2>
+
+@*form that posts to the Edit() action. uses asp-action tag helper, but not
+    asp-controller.*@
+<form asp-area="Admin" asp-controller="Incident" asp-action="Edit" method="post">
+
+    @*data validation*@
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    @*displays labels and text boxes*@
+    <div class="form-group">
+        <label asp-for="@Model.Incident.TechnicianID">Technician:</label>
+        <input asp-for="@Model.Incident.TechnicianID" hidden />
+        <span class="mx-5">@Model.Incident.Technician.Name</span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Incident.CustomerID">Customer:</label>
+        <input asp-for="@Model.Incident.CustomerID" hidden />
+        <span class="mx-5">@Model.Incident.Customer.FullName</span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Incident.ProductID">Product:</label>
+        <input asp-for="@Model.Incident.ProductID" hidden />
+        <span class="mx-5">@Model.Incident.Product.Name</span>
+
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Incident.Title">Title</label>
+        <input asp-for="@Model.Incident.Title" class="form-control" readonly />
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="@Model.Incident.DateOpened">Date Opened</label>
+        <input asp-for="@Model.Incident.DateOpened" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Incident.Description">Description</label>
+        <textarea asp-for="@Model.Incident.Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Incident.DateClosed">Date Closed</label>
+        <input asp-for="@Model.Incident.DateClosed" class="form-control" />
+    </div>
+
+    @*uses hidden field to store the IncidentID*@
+    <input type="hidden" asp-for="@Model.Incident.IncidentID" />
+
+    @*button link formatted, submit posts form to Edit(), ViewBag.Action displays
+        Add or Edit depending on which action method served the view.*@
+    <button type="submit" class="btn btn-primary">@Model.DesiredAction</button>
+    <a asp-controller="TechIncident" asp-action="Success"
+       class="btn btn-outline-secondary">Cancel</a>
+</form>
